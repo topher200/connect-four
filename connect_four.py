@@ -15,9 +15,9 @@ def get_board_display(board_state, debug_mode=False):
         corresponding cell.
 
         Returns a string representation of the board state.  Always
-        has number labels on the columns.  
+        has number labels on the columns.
 
-        If L{debug_mode} is C{True}, the column number labels will 
+        If L{debug_mode} is C{True}, the column number labels will
         be zero-based (0...NUM_COLS) and 0-based row labels
         will be present.  If C{debug_mode} is C{False}, the column labels
         will be 1-based (1...NUM_COLS+1) and there will be no row labels.
@@ -42,16 +42,13 @@ def get_board_display(board_state, debug_mode=False):
     board_height = len(board_state)
     assert board_height >= 1
     # just asserted there is at least 1 element, grab it to detect width
-    board_width = len(board_state[0]) 
+    board_width = len(board_state[0])
      # make sure 2d array is rectangular
     assert all(len(cols) == board_width for cols in board_state)
 
-    # make the base of the string that will 
-    # represent the top and bottom of the board.
-    # the statement 'STR_1.join(iterable)'' will join each element 
-    # from the iterable using STR_1
-    # for example, 'm'.join(('1','2','3','4')) will create the string
-    # 1m2m3m4
+    # make the base of the string that will represent the top and bottom of the board.
+    # the statement 'STR_1.join(iterable)'' will join each element from the iterable using STR_1.
+    # for example, 'm'.join(('1','2','3','4')) will create the string 1m2m3m4
     # NOTE: it doesn't put one before or after, so we do it manually.
     BASE_TOP_BOT = (LEFT_PAD_STR + # indent the top line by the pad
                     VERTICAL_BOARD_STR + # add one before
@@ -59,11 +56,11 @@ def get_board_display(board_state, debug_mode=False):
                     # the innards of the join(stuff to join) will yield an iterable
                     # the same length as the xrange (which we're using just to
                     # count iterations) but with every element as '---'
-                    VERTICAL_BOARD_STR.join(HORIZ_BOARD_STR_THREE for x in xrange(board_width)) + 
+                    VERTICAL_BOARD_STR.join(HORIZ_BOARD_STR_THREE for x in xrange(board_width)) +
                     VERTICAL_BOARD_STR + # add one after
                     '\n')
 
-    # debug mode shows the 0-based indices of the columns, but 
+    # debug mode shows the 0-based indices of the columns, but
     # when we're playing the game we use 1 to len(cols)
     if debug_mode:
         col_labels = xrange(0, board_width)
@@ -71,10 +68,10 @@ def get_board_display(board_state, debug_mode=False):
         col_labels = xrange(1, board_width + 1)
 
     # the line with the numbers labelling the columns
-    HEADER = ('\n' + 
-              LEFT_PAD_STR + 
+    HEADER = ('\n' +
+              LEFT_PAD_STR +
               # this next one labels the columns
-              ' '.join('%3d' % x for x in col_labels) + 
+              ' '.join('%3d' % x for x in col_labels) +
               '\n' +
               BASE_TOP_BOT)
 
@@ -118,12 +115,12 @@ def get_next_free_row_in_column(col_number, board_state):
     board_height = len(board_state)
     assert board_height >= 1
     # just asserted there is at least 1 element, grab it to detect width
-    board_width = len(board_state[0]) 
+    board_width = len(board_state[0])
      # make sure 2d array is rectangular
     assert all(len(cols) == board_width for cols in board_state)
 
     # from max row index (height - 1) to 0 (to -1, not inclusive!), by -1
-    for row_idx in xrange(board_height-1, -1, -1): 
+    for row_idx in xrange(board_height-1, -1, -1):
         if board_state[row_idx][col_number] == BLANK_STR:
             return row_idx # return as soon as we find an empty cell
 
@@ -146,7 +143,7 @@ def is_board_full(board_state):
     board_height = len(board_state)
     assert board_height >= 1
     # just asserted there is at least 1 element, grab it to detect width
-    board_width = len(board_state[0]) 
+    board_width = len(board_state[0])
      # make sure 2d array is rectangular
     assert all(len(cols) == board_width for cols in board_state)
 
@@ -159,7 +156,7 @@ def is_board_full(board_state):
 
     # if we make it here, we never found an empty spot,
     # so the board must be full
-    return True 
+    return True
 
 # create the board state that will track th
 board_state = []
@@ -180,11 +177,10 @@ print(get_board_display(board_state))
 # player 1 goes first
 current_player = PLAYER_1_STR
 
-while not is_board_full(board_state): 
-
+while not is_board_full(board_state):
     # raw_input will not return a value until a user enters it
     # into the terminal that called this script.  The returned
-    # value is always a string, even if it's composed of numbers! 
+    # value is always a string, even if it's composed of numbers!
     col_input = raw_input('Player%sPick a column, 1-%s: ' % (current_player, BOARD_WIDTH))
 
     # this is a way of handling errors.  If anything in the 'try' block
@@ -194,7 +190,7 @@ while not is_board_full(board_state):
         # try to slam the input string into an integer.  If
         # not possible, BOOM
         col_num = int(col_input) - 1 # display to user is offset by one!!!
-    except: 
+    except:
         print('Invalid column number')
         continue # stops executing this iteration of the loop and goes back to the top
 
